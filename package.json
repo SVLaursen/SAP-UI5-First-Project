@@ -19,10 +19,15 @@
         },
         "devDependencies": {
                 "@ui5/cli": "^1.12.1",
+                "eslint": "^6.7.2",
+                "grunt": "^1.0.4",
+                "grunt-contrib-clean": "^2.0.0",
+                "grunt-contrib-connect": "^2.1.0",
+                "grunt-contrib-copy": "^1.0.0",
+                "grunt-openui5": "^0.16.0",
                 "karma": "^4.4.1",
                 "karma-chrome-launcher": "^3.1.0",
                 "karma-coverage": "^2.0.1",
-                "karma-ui5": "^1.1.0",
-                "eslint": "^6.7.2"
+                "karma-ui5": "^1.1.0"
         }
 }
