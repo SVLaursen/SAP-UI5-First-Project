@@ -2,11 +2,21 @@
 	displayBlock="true"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
-	<App id="idAppControl">
-		<pages>
-			<Page title="{i18n>title}">
-				<content></content>
-			</Page>
-		</pages>
-	</App>
+	<Shell>
+		<App id="myAppDemoWT">
+			<pages>
+				<Page title="{i18n>title}">
+					<headerContent>
+						<Button
+							icon="sap-icon://hello-world"
+							press=".onOpenDialog"/>
+					</headerContent>
+					<content>
+						<mvc:XMLView viewName="com.svl.ui5.myUI5App.view.HelloPanel"/>
+						<mvc:XMLView viewName="com.svl.ui5.myUI5App.view.InvoiceList"/>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
 </mvc:View> 
