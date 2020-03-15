@@ -53,12 +53,12 @@
 				"settings": {
 					"bundleName": "com.svl.ui5.myUI5App.i18n.i18n"
 				}
-			}
-		},
-		"invoice": {
-		  "type": "sap.ui.model.json.JSONModel",
-		  "uri": "Invoices.json"
-		},
+			},
+			"invoice": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "Invoices.json"
+			  }
+		},		
 		"resources": {
 			"css": [{
 				"uri": "css/style.css"
