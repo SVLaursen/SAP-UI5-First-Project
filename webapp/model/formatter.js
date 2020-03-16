@@ -15,6 +15,9 @@ sap.ui.define([], function(){
                 default:
                     return sStatus;
             }
+        },
+        numberUnit : function(sValue){
+            return !sValue ? "" : parseFloat(sValue).toFixed(2);
         }
     };
 });
