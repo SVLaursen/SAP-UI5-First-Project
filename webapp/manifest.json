@@ -14,7 +14,8 @@
 				"uri": "https://geed.cfapps.eu10.hana.ondemand.com",
 				"type": "OData",
 				"settings" : {
-					"odataversion" : "4.0"
+					"odataversion" : "4.0",
+					"localUri": "localService/metadata.xml"
 				}
 			}
 		}

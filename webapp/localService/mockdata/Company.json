@@ -1,0 +1,50 @@
+[
+    {
+        "companyID": "1e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "World Truckers",
+        "numberOfEmployees": 1897,
+        "revenue": 28560000,
+        "country_code": "US",
+        "currency_code": "USD"
+    },
+    {
+        "companyID": "2e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "Global Carrot Exports",
+        "numberOfEmployees": 22711,
+        "revenue": 39570000,
+        "country_code": "CA",
+        "currency_code": "CAD"
+    },
+    {
+        "companyID": "3e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "Runaway Trailers",
+        "numberOfEmployees": 1733,
+        "revenue": 2034000,
+        "country_code": "GB",
+        "currency_code": "GBP"
+    },
+    {
+        "companyID": "4e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "Carryall Consumables",
+        "numberOfEmployees": 44600,
+        "revenue": 207900400,
+        "country_code": "DE",
+        "currency_code": "EUR"
+    },
+    {
+        "companyID": "5e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "Vive'Le'Grenouille",
+        "numberOfEmployees": 207,
+        "revenue": 206800,
+        "country_code": "FR",
+        "currency_code": "EUR"
+    },
+    {
+        "companyID": "6e94fee2-e8ca-4305-b21c-850067161d94",
+        "companyName": "Selvkøb Færdigfrys",
+        "numberOfEmployees": 144,
+        "revenue": 1450000,
+        "country_code": "DK",
+        "currency_code": "DKK"
+    }
+]

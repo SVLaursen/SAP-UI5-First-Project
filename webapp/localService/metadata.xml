@@ -1,0 +1,596 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+	<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+		<edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+		<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="TradeInfo">
+			<EntityContainer Name="EntityContainer">
+				<EntitySet Name="CompanySet" EntityType="TradeInfo.CompanySet">
+					<NavigationPropertyBinding Path="country" Target="Countries"/>
+					<NavigationPropertyBinding Path="currency" Target="Currencies"/>
+					<NavigationPropertyBinding Path="CompanyProduct" Target="ProductSet"/>
+				</EntitySet>
+				<EntitySet Name="Countries" EntityType="TradeInfo.Countries">
+					<NavigationPropertyBinding Path="texts" Target="Countries_texts"/>
+					<NavigationPropertyBinding Path="localized" Target="Countries_texts"/>
+				</EntitySet>
+				<EntitySet Name="Countries_texts" EntityType="TradeInfo.Countries_texts"/>
+				<EntitySet Name="Currencies" EntityType="TradeInfo.Currencies">
+					<NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+					<NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+				</EntitySet>
+				<EntitySet Name="Currencies_texts" EntityType="TradeInfo.Currencies_texts"/>
+				<EntitySet Name="CustomerSet" EntityType="TradeInfo.CustomerSet">
+					<NavigationPropertyBinding Path="country" Target="Countries"/>
+					<NavigationPropertyBinding Path="CustomerPurchase" Target="PurchaseSet"/>
+				</EntitySet>
+				<EntitySet Name="ProductSet" EntityType="TradeInfo.ProductSet">
+					<NavigationPropertyBinding Path="currency" Target="Currencies"/>
+					<NavigationPropertyBinding Path="ProductCompany" Target="CompanySet"/>
+					<NavigationPropertyBinding Path="ProductPurchase" Target="PurchaseSet"/>
+				</EntitySet>
+				<EntitySet Name="PurchaseSet" EntityType="TradeInfo.PurchaseSet">
+					<NavigationPropertyBinding Path="PurchaseCustomer" Target="CustomerSet"/>
+					<NavigationPropertyBinding Path="PurchaseProduct" Target="ProductSet"/>
+				</EntitySet>
+				<FunctionImport Name="RequestDiscount" Function="TradeInfo.RequestDiscount"/>
+			</EntityContainer>
+			<EntityType Name="CompanySet">
+				<Key>
+					<PropertyRef Name="companyID"/>
+				</Key>
+				<Property Name="companyID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="companyName" Type="Edm.String" MaxLength="50"/>
+				<Property Name="companyDescription" Type="Edm.String" MaxLength="100"/>
+				<NavigationProperty Name="country" Type="TradeInfo.Countries">
+					<ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+				</NavigationProperty>
+				<Property Name="numberOfEmployees" Type="Edm.Int32"/>
+				<Property Name="revenue" Type="Edm.Int32"/>
+				<NavigationProperty Name="currency" Type="TradeInfo.Currencies">
+					<ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+				</NavigationProperty>
+				<NavigationProperty Name="CompanyProduct" Type="Collection(TradeInfo.ProductSet)"/>
+				<Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+				<Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+			</EntityType>
+			<EntityType Name="Countries">
+				<Key>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+				<NavigationProperty Name="texts" Type="Collection(TradeInfo.Countries_texts)">
+					<OnDelete Action="Cascade"/>
+				</NavigationProperty>
+				<NavigationProperty Name="localized" Type="TradeInfo.Countries_texts">
+					<ReferentialConstraint Property="code" ReferencedProperty="code"/>
+				</NavigationProperty>
+			</EntityType>
+			<EntityType Name="Countries_texts">
+				<Key>
+					<PropertyRef Name="locale"/>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+			</EntityType>
+			<EntityType Name="Currencies">
+				<Key>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+				<Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+				<NavigationProperty Name="texts" Type="Collection(TradeInfo.Currencies_texts)">
+					<OnDelete Action="Cascade"/>
+				</NavigationProperty>
+				<NavigationProperty Name="localized" Type="TradeInfo.Currencies_texts">
+					<ReferentialConstraint Property="code" ReferencedProperty="code"/>
+				</NavigationProperty>
+			</EntityType>
+			<EntityType Name="Currencies_texts">
+				<Key>
+					<PropertyRef Name="locale"/>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+			</EntityType>
+			<EntityType Name="CustomerSet">
+				<Key>
+					<PropertyRef Name="customerID"/>
+				</Key>
+				<Property Name="customerID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="firstName" Type="Edm.String"/>
+				<Property Name="lastName" Type="Edm.String"/>
+				<NavigationProperty Name="country" Type="TradeInfo.Countries">
+					<ReferentialConstraint Property="country_code" ReferencedProperty="code"/>
+				</NavigationProperty>
+				<Property Name="birthdate" Type="Edm.DateTimeOffset"/>
+				<NavigationProperty Name="CustomerPurchase" Type="Collection(TradeInfo.PurchaseSet)"/>
+				<Property Name="country_code" Type="Edm.String" MaxLength="3"/>
+			</EntityType>
+			<EntityType Name="ProductSet">
+				<Key>
+					<PropertyRef Name="productID"/>
+				</Key>
+				<Property Name="productID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="title" Type="Edm.String"/>
+				<Property Name="description" Type="Edm.String"/>
+				<Property Name="cost" Type="Edm.Int32"/>
+				<NavigationProperty Name="currency" Type="TradeInfo.Currencies">
+					<ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+				</NavigationProperty>
+				<Property Name="company" Type="Edm.Guid"/>
+				<Property Name="minimumPurchaseNumber" Type="Edm.Int32"/>
+				<Property Name="weight" Type="Edm.Int32"/>
+				<Property Name="discountLimit" Type="Edm.Int32"/>
+				<Property Name="discountPercentage" Type="Edm.Decimal"/>
+				<Property Name="deliveryTime" Type="Edm.Int32"/>
+				<Property Name="productImage" Type="Edm.String" MaxLength="255"/>
+				<NavigationProperty Name="ProductCompany" Type="TradeInfo.CompanySet">
+					<ReferentialConstraint Property="company" ReferencedProperty="companyID"/>
+				</NavigationProperty>
+				<NavigationProperty Name="ProductPurchase" Type="Collection(TradeInfo.PurchaseSet)"/>
+				<Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+			</EntityType>
+			<EntityType Name="PurchaseSet">
+				<Key>
+					<PropertyRef Name="purchaseID"/>
+				</Key>
+				<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="purchaseID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="product" Type="Edm.Guid"/>
+				<Property Name="customer" Type="Edm.Guid"/>
+				<Property Name="amount" Type="Edm.Int32"/>
+				<Property Name="rating" Type="Edm.Int32"/>
+				<Property Name="orderConfirmationNeeded" Type="Edm.Boolean"/>
+				<Property Name="level" Type="Edm.Int32"/>
+				<NavigationProperty Name="PurchaseCustomer" Type="TradeInfo.CustomerSet">
+					<ReferentialConstraint Property="customer" ReferencedProperty="customerID"/>
+				</NavigationProperty>
+				<NavigationProperty Name="PurchaseProduct" Type="TradeInfo.ProductSet">
+					<ReferentialConstraint Property="product" ReferencedProperty="productID"/>
+				</NavigationProperty>
+			</EntityType>
+			<ComplexType Name="Discount">
+				<Property Name="percentage" Type="Edm.Int32"/>
+				<Property Name="amount" Type="Edm.Decimal" Scale="2" Precision="10"/>
+			</ComplexType>
+			<Function Name="RecalculateRevenue" IsBound="true" IsComposable="false">
+				<Parameter Name="in" Type="TradeInfo.CompanySet"/>
+				<ReturnType Type="Edm.Int32"/>
+			</Function>
+			<Function Name="RequestDiscount" IsBound="false" IsComposable="false">
+				<Parameter Name="purchaseAmount" Type="Edm.Decimal" Scale="2" Precision="10"/>
+				<ReturnType Type="TradeInfo.Discount"/>
+			</Function>
+			<Annotations Target="TradeInfo.CompanySet">
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="companyDescription"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="companyName"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="TypeName" String="Company"/>
+						<PropertyValue Property="TypeNamePlural" String="Companies"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="companyName"/>
+							<PropertyValue Property="Label" String="Company Name"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="numberOfEmployees"/>
+							<PropertyValue Property="Label" String="Company Size"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection/>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.EntityContainer/CompanySet">
+				<Annotation Term="Capabilities.DeleteRestrictions">
+					<Record Type="Capabilities.DeleteRestrictionsType">
+						<PropertyValue Property="Deletable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.InsertRestrictions">
+					<Record Type="Capabilities.InsertRestrictionsType">
+						<PropertyValue Property="Insertable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.UpdateRestrictions">
+					<Record Type="Capabilities.UpdateRestrictionsType">
+						<PropertyValue Property="Updatable" Bool="false"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.CompanySet/country">
+				<Annotation Term="Common.Label" String="Country"/>
+				<Annotation Term="Core.Description" String="A country code as specified in ISO 3166-1"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.CompanySet/currency">
+				<Annotation Term="Common.Label" String="Currency"/>
+				<Annotation Term="Core.Description" String="A currency code as specified in ISO 4217"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.CompanySet/country_code">
+				<Annotation Term="Common.Label" String="Country"/>
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="Label" String="Country"/>
+						<PropertyValue Property="CollectionPath" String="Countries"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+									<PropertyValue Property="ValueListProperty" String="code"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="name"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Core.Description" String="A country code as specified in ISO 3166-1"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.CompanySet/currency_code">
+				<Annotation Term="Common.Label" String="Currency"/>
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="Label" String="Currency"/>
+						<PropertyValue Property="CollectionPath" String="Currencies"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+									<PropertyValue Property="ValueListProperty" String="code"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="name"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Core.Description" String="A currency code as specified in ISO 4217"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries">
+				<Annotation Term="UI.Identification">
+					<Collection>
+						<Path>name</Path>
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries/descr">
+				<Annotation Term="Common.Label" String="Description"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries/code">
+				<Annotation Term="Common.Label" String="Country Code"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries_texts/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries_texts/descr">
+				<Annotation Term="Common.Label" String="Description"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Countries_texts/code">
+				<Annotation Term="Common.Label" String="Country Code"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies">
+				<Annotation Term="UI.Identification">
+					<Collection>
+						<Path>name</Path>
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies/descr">
+				<Annotation Term="Common.Label" String="Description"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies/code">
+				<Annotation Term="Common.Label" String="Currency Code"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies/symbol">
+				<Annotation Term="Common.Label" String="Currency Symbol"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies_texts/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies_texts/descr">
+				<Annotation Term="Common.Label" String="Description"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.Currencies_texts/code">
+				<Annotation Term="Common.Label" String="Currency Code"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.CustomerSet">
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="firstName"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="lastName"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="TypeName" String="Customer"/>
+						<PropertyValue Property="TypeNamePlural" String="Customers"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="firstName"/>
+							<PropertyValue Property="Label" String="First Name"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="lastName"/>
+							<PropertyValue Property="Label" String="Last Name"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection/>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.EntityContainer/CustomerSet">
+				<Annotation Term="Capabilities.DeleteRestrictions">
+					<Record Type="Capabilities.DeleteRestrictionsType">
+						<PropertyValue Property="Deletable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.InsertRestrictions">
+					<Record Type="Capabilities.InsertRestrictionsType">
+						<PropertyValue Property="Insertable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.UpdateRestrictions">
+					<Record Type="Capabilities.UpdateRestrictionsType">
+						<PropertyValue Property="Updatable" Bool="false"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.CustomerSet/country">
+				<Annotation Term="Common.Label" String="Country"/>
+				<Annotation Term="Core.Description" String="A country code as specified in ISO 3166-1"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.CustomerSet/country_code">
+				<Annotation Term="Common.Label" String="Country"/>
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="Label" String="Country"/>
+						<PropertyValue Property="CollectionPath" String="Countries"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="country_code"/>
+									<PropertyValue Property="ValueListProperty" String="code"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="name"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Core.Description" String="A country code as specified in ISO 3166-1"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.ProductSet">
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="description"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="ImageUrl" Path="productImage"/>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="title"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="TypeName" String="Product"/>
+						<PropertyValue Property="TypeNamePlural" String="Products"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="title"/>
+							<PropertyValue Property="Label" String="Title"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="ProductCompany/companyName"/>
+							<PropertyValue Property="Label" String="Company"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection/>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.EntityContainer/ProductSet">
+				<Annotation Term="Capabilities.DeleteRestrictions">
+					<Record Type="Capabilities.DeleteRestrictionsType">
+						<PropertyValue Property="Deletable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.InsertRestrictions">
+					<Record Type="Capabilities.InsertRestrictionsType">
+						<PropertyValue Property="Insertable" Bool="false"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="Capabilities.UpdateRestrictions">
+					<Record Type="Capabilities.UpdateRestrictionsType">
+						<PropertyValue Property="Updatable" Bool="false"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.ProductSet/currency">
+				<Annotation Term="Common.Label" String="Currency"/>
+				<Annotation Term="Core.Description" String="A currency code as specified in ISO 4217"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.ProductSet/currency_code">
+				<Annotation Term="Common.Label" String="Currency"/>
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="Label" String="Currency"/>
+						<PropertyValue Property="CollectionPath" String="Currencies"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+									<PropertyValue Property="ValueListProperty" String="code"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="name"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Core.Description" String="A currency code as specified in ISO 4217"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet">
+				<Annotation Term="UI.HeaderFacets">
+					<Collection>
+						<Record Type="UI.Facet">
+							<PropertyValue Property="ID" String="PurchaseDetails"/>
+							<PropertyValue Property="Label" String="Details"/>
+							<PropertyValue Property="Data">
+								<Collection>
+									<Record>
+										<PropertyValue Property="Value" Path="created_byUser"/>
+										<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+									</Record>
+									<Record>
+										<PropertyValue Property="Value" Path="created_at"/>
+										<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+									</Record>
+									<Record>
+										<PropertyValue Property="Value" Path="modified_byUser"/>
+										<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+									</Record>
+									<Record>
+										<PropertyValue Property="Value" Path="modified_at"/>
+										<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+									</Record>
+								</Collection>
+							</PropertyValue>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="amount"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="ImageUrl" Path="PurchaseProduct/productImage"/>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="PurchaseProduct/title"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="TypeName" String="Purchase"/>
+						<PropertyValue Property="TypeNamePlural" String="Purchases"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PurchaseProduct/title"/>
+							<PropertyValue Property="Label" String="Product"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PurchaseCustomer/lastName"/>
+							<PropertyValue Property="Label" String="Customer"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="amount"/>
+							<PropertyValue Property="Label" String="Amount"/>
+							<PropertyValue Property="Criticality" Path="level"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="rating"/>
+							<PropertyValue Property="Label" String="Rating"/>
+							<PropertyValue Property="TargetValue" Int="5"/>
+							<PropertyValue Property="Visualization" EnumMember="UI.LineItemType/RATING"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection/>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/createdAt">
+				<Annotation Term="Common.Label" String="Created At"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/createdBy">
+				<Annotation Term="Common.Label" String="Created By"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="A user's unique ID"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/modifiedAt">
+				<Annotation Term="Common.Label" String="Changed At"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/modifiedBy">
+				<Annotation Term="Common.Label" String="Changed By"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="A user's unique ID"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/rating">
+				<Annotation Term="UI.Visualization" Int="3"/>
+			</Annotations>
+			<Annotations Target="TradeInfo.PurchaseSet/level">
+				<Annotation Term="Core.Computed" Bool="true"/>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>
