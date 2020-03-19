@@ -21,7 +21,7 @@ sap.ui.define([
             var sQuery = oEvent.getParameter("query");
 
             if(sQuery){
-                aFilter.push(new Filter("ProductName", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter("title", FilterOperator.Contains, sQuery));
             }
 
             var oList = this.byId("invoiceList");
