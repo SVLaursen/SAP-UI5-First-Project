@@ -11,11 +11,10 @@
 		"description": "{{appDescription}}",
 		"dataSources": {
 			"dataService": {
-				"uri": "https://geed.cfapps.eu10.hana.ondemand.com",
+				"uri": "http://localhost:8081/https://services.odata.org/V2/Northwind/Northwind.svc/",
 				"type": "OData",
 				"settings" : {
-					"odataversion" : "4.0",
-					"localUri": "localService/metadata.xml"
+					"odataversion" : "2.0"
 				}
 			}
 		}

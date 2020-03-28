@@ -4,12 +4,12 @@ sap.ui.define([
 ], function (MockServer, UriParameters){
     "use strict";
 
-    return {
+    return{
         init: function(){
             var oMockServer = new MockServer({
-                rootUri: "https://geed.cfapps.eu10.hana.ondemand.com/"
+                rootUri: "http://localhost:8081/https://services.odata.org/V2/Northwind/Nortwind.svc"
             });
-
+            
             var oUriParameters = new UriParameters(window.location.href);
 
             MockServer.config({
@@ -22,4 +22,4 @@ sap.ui.define([
             oMockServer.start();
         }
     }
-})
+});
