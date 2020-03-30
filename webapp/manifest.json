@@ -81,16 +81,36 @@
 				"controlAggregation": "pages",
 				"async": true
 			},
-			"routes": [{
-				"name": "RouteMainView",
-				"pattern": "RouteMainView",
-				"target": ["TargetMainView"]
-			}],
+			"routes": [
+				{
+					"name": "RouteMainView",
+					"pattern": "RouteMainView",
+					"target": ["TargetMainView"]
+				},
+				{
+					"name": "RouteOverview",
+					"pattern": "",
+					"target": ["TargetOverview"]
+				},
+				{
+					"name": "RouteDetailView",
+					"pattern": "RouteDetailView/{invoicePath}",
+					"target": ["TargetDetailView"]
+				}
+			],
 			"targets": {
 				"TargetMainView": {
 					"viewType": "XML",
 					"viewLevel": 1,
 					"viewName": "MainView"
+				},
+				"TargetOverview":{
+					"viewType": "XML",
+					"viewName": "Overview"
+				},
+				"TargetDetailView":{
+					"viewType": "XML",
+					"viewName": "Detail"
 				}
 			}
 		}

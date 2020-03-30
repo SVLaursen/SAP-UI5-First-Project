@@ -31,6 +31,11 @@ sap.ui.define([
 			var oModel = new JSONModel(oData);
 			this.setModel(oModel);
 
+			// set device model
+			var oDeviceModel = new JSONModel(Device);
+			oDeviceModel.setDefaultBindingMode("OneWay");
+			this.setModel(oDeviceModel, "device");
+
 			// enable routing
 			this.getRouter().initialize();
 
@@ -48,6 +53,13 @@ sap.ui.define([
 
 		openHelloDialog: function() {
 			this._helloDialog.open();
+		},
+
+		getContentDensityClass: function(){
+			if(!this._sContentDensityClass){
+				this._sContentDensityClass = !Device.support.touch ? "sapUiSizeCompact" : "sapUiSizeCozy";
+			}
+			return this._sContentDensityClass;
 		}
 	});
 });
